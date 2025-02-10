@@ -1,6 +1,4 @@
 "use client"
-```tsx file="components/training/progress-visualization.tsx"
-"use client"
 
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
@@ -25,11 +23,12 @@ interface ProgressVisualizationProps {
 }
 
 export function ProgressVisualization({
-  progress,
-  currentEpoch,
-  totalEpochs,
+  progress = [],
+  currentEpoch = 0,
+  totalEpochs = 1,
 }: ProgressVisualizationProps) {
-  const progressPercent = (currentEpoch / totalEpochs) * 100
+  const progressPercent = totalEpochs > 0 ? (currentEpoch / totalEpochs) * 100 : 0;
+  const lastProgress = progress.length > 0 ? progress[progress.length - 1] : { loss: 0, validationLoss: 0 };
 
   return (
     <Card>
@@ -75,9 +74,7 @@ export function ProgressVisualization({
         <div className="grid grid-cols-2 gap-4">
           <Card>
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold">
-                {progress[progress.length - 1]?.loss.toFixed(4)}
-              </div>
+              <div className="text-2xl font-bold">{lastProgress.loss.toFixed(4)}</div>
               <div className="text-sm text-muted-foreground">
                 Current Training Loss
               </div>
@@ -85,9 +82,7 @@ export function ProgressVisualization({
           </Card>
           <Card>
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold">
-                {progress[progress.length - 1]?.validationLoss.toFixed(4)}
-              </div>
+              <div className="text-2xl font-bold">{lastProgress.validationLoss.toFixed(4)}</div>
               <div className="text-sm text-muted-foreground">
                 Current Validation Loss
               </div>
@@ -98,6 +93,5 @@ export function ProgressVisualization({
     </Card>
   )
 }
-
 
 export default ProgressVisualization;
