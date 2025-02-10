@@ -99,3 +99,5 @@ export function ProgressVisualization({
   )
 }
 
+
+export default ProgressVisualization;
